@@ -1130,7 +1130,8 @@ extern char **environ;
 static jv
 make_env(jv env)
 {
-  // Don't expose environment variables
+  // Intentionally return empty object instead of exposing object built from system environment
+  // variables when jq expressions use `$ENV`
   return jv_object();
 }
 

@@ -1067,7 +1067,8 @@ extern char **environ;
 
 static jv f_env(jq_state *jq, jv input) {
   jv_free(input);
-  // Don't expose environment variables
+  // Intentionally return empty object instead of exposing object built from system environment
+  // variables when jq envokes the `env` function
   return jv_object();
 }
 
