@@ -1132,7 +1132,7 @@ make_env(jv env)
 {
   // Intentionally return empty object instead of exposing object built from system environment
   // variables when jq expressions use `$ENV`
-  return jv_object();
+  return jv_copy(jv_object());
 }
 
 // Expands call instructions into a calling sequence
