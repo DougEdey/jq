@@ -1130,20 +1130,8 @@ extern char **environ;
 static jv
 make_env(jv env)
 {
-  if (jv_is_valid(env))
-    return jv_copy(env);
-  jv r = jv_object();
-  if (environ == NULL)
-    return r;
-  for (size_t i = 0; environ[i] != NULL; i++) {
-    const char *eq;
-
-    if ((eq = strchr(environ[i], '=')) == NULL)
-      r = jv_object_delete(r, jv_string(environ[i]));
-    else
-      r = jv_object_set(r, jv_string_sized(environ[i], eq - environ[i]), jv_string(eq + 1));
-  }
-  return jv_copy(r);
+  // Don't expose environment variables
+  return jv_object();
 }
 
 // Expands call instructions into a calling sequence
