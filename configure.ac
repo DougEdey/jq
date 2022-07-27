@@ -212,6 +212,26 @@ AC_CHECK_MATH_FUNC(y0)
 AC_CHECK_MATH_FUNC(y1)
 AC_CHECK_MATH_FUNC(yn)
 
+# exp10 is nonstandard, but available as __exp10 on Darwin
+if test $ac_cv_lib_m_exp10 = no; then
+  AC_CHECK_DECL([__exp10], [
+    AC_DEFINE_UNQUOTED([HAVE_EXP10])
+    AC_DEFINE_UNQUOTED([exp10], [__exp10])
+  ],[], [[#include <math.h>]])
+fi
+
+# check whether _REENTRANT is required for lgamma_r
+if test "x$ac_cv_have_decl_lgamma_r" = xno; then
+  unset ac_cv_have_decl_lgamma_r
+  AC_CHECK_DECL([lgamma_r], [
+    AC_DEFINE_UNQUOTED([_REENTRANT])
+    AC_DEFINE_UNQUOTED([HAVE_LGAMMA_R])
+  ],[], [[
+    #define _REENTRANT
+    #include <math.h>
+  ]])
+fi
+
 dnl Thread local storage
 have___thread=no
 AC_MSG_CHECKING(for thread-local storage)
